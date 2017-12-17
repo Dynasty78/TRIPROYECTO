@@ -2,19 +2,27 @@ package Interfaz;
 
 import Controller.ConectorDb;
 import Controller.Controladora;
+import Dominio.Cliente;
 import Dominio.Solicitud_Avion;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class DetalleDeAvion extends javax.swing.JFrame {
 
     Controladora control;
     ConectorDb conector;
-    public DetalleDeAvion(int idAvion) {
+    JFrame ventana;
+    Cliente cl;
+    int idAvion;
+    public DetalleDeAvion(JFrame ventana,int idAvion,Cliente cl) {
         initComponents();
         control = new Controladora();
         control.iniciaVentana(this);
         conector = new ConectorDb();
         conector.conectar();
+        this.cl = cl;
+        this.idAvion = idAvion;
+        this.ventana = ventana;
         control.buildDescripcionCaracteristicas(control.getResultSet(conector,"select ca_nombre, ac_valor from avion,avion_caracteristica,caracteristica where av_id = '"+idAvion+"' and av_id = ac_avion_id and ca_id = ac_caracteristica_id"),conector, tableCaracteristicas, idAvion, desCripcionDetalle,nombreAirucab);
         
     }
@@ -44,8 +52,9 @@ public class DetalleDeAvion extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableCaracteristicas = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        solicitarBtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        atrasBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -152,34 +161,42 @@ public class DetalleDeAvion extends javax.swing.JFrame {
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 330, 540, 100));
 
-        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(25, 118, 210));
-        jButton1.setText("Solicitar Avión");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        solicitarBtn.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        solicitarBtn.setForeground(new java.awt.Color(25, 118, 210));
+        solicitarBtn.setText("Solicitar Avión");
+        solicitarBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        solicitarBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                solicitarBtnMouseClicked(evt);
             }
         });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        solicitarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                solicitarBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 470, -1, -1));
+        jPanel2.add(solicitarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 470, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel5.setText("Descripcion :");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
+
+        atrasBtn.setText("Atras");
+        atrasBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atrasBtnActionPerformed(evt);
+            }
+        });
+        jPanel2.add(atrasBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 470, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 760, 510));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void solicitarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_solicitarBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_solicitarBtnActionPerformed
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         this.setState(Home.ICONIFIED);
@@ -193,12 +210,15 @@ public class DetalleDeAvion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jLabel23MouseClicked
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-
-        Solicitud_Avion SA = new Solicitud_Avion(2,4);
+    private void solicitarBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_solicitarBtnMouseClicked
+        Solicitud_Avion SA = new Solicitud_Avion(cl.getCL_id(),idAvion);
         SA.generarSolicitud(conector);        
 
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_solicitarBtnMouseClicked
+
+    private void atrasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasBtnActionPerformed
+        control.activaVentana(ventana, this);
+    }//GEN-LAST:event_atrasBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -243,8 +263,8 @@ public class DetalleDeAvion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton atrasBtn;
     private javax.swing.JTextArea desCripcionDetalle;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
@@ -256,6 +276,7 @@ public class DetalleDeAvion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel nombreAirucab;
+    private javax.swing.JButton solicitarBtn;
     private javax.swing.JTable tableCaracteristicas;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,25 +1,37 @@
-package Interfaz;
+package Interfaz.Cliente;
 
 import Controller.ConectorDb;
 import Controller.Controladora;
+import Dominio.Cliente;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class MisSolicitudes extends javax.swing.JFrame {
+    public class MisSolicitudes extends javax.swing.JFrame {
 
     Controladora control;
     ConectorDb conector;
-    int id;
+    JFrame ventana;
+    Cliente cl;
     public MisSolicitudes() {
-        
         initComponents();
         control = new Controladora();
         conector = new ConectorDb();
         conector.conectar();
         control.iniciaVentana(this);
-        id = 2; //id usuario logeado.
-        control.llenarTabla(listaSolicitudes,control.getResultSet(conector,"SELECT sa_id,av_nombre FROM persona,cliente,solicitud_avion,avion,estatus_solicitud_avion WHERE cl_id = sa_cliente_id AND av_id = sa_avion_id AND cl_persona_id = pe_id AND sa_estatus_id = esa_id AND cl_id = '"+id+"'"));
-    
+       
     }
+    
+    public MisSolicitudes(JFrame x,Cliente cl) {
+        initComponents();
+        control = new Controladora();
+        conector = new ConectorDb();
+        conector.conectar();
+        ventana = x;
+        this.cl = cl;
+        control.iniciaVentana(this);
+        control.llenarTabla(listaSolicitudes,control.getResultSet(conector,"SELECT sa_id,av_nombre FROM persona,cliente,solicitud_avion,avion,estatus_solicitud_avion WHERE cl_id = sa_cliente_id AND av_id = sa_avion_id AND cl_persona_id = pe_id AND sa_estatus_id = esa_id AND cl_id = '"+cl.getCL_id()+"'"));
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -42,6 +54,7 @@ public class MisSolicitudes extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         solicitudLbl = new javax.swing.JLabel();
         mispiezasBtn = new javax.swing.JButton();
+        atrasBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -160,6 +173,13 @@ public class MisSolicitudes extends javax.swing.JFrame {
             }
         });
 
+        atrasBtn.setText("Atras");
+        atrasBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atrasBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -167,7 +187,10 @@ public class MisSolicitudes extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(mispiezasBtn)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(atrasBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(mispiezasBtn))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,7 +251,9 @@ public class MisSolicitudes extends javax.swing.JFrame {
                             .addComponent(jLabel10)
                             .addComponent(solicitudLbl))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(mispiezasBtn)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(mispiezasBtn)
+                            .addComponent(atrasBtn))))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
 
@@ -254,8 +279,12 @@ public class MisSolicitudes extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel98MouseClicked
 
     private void listaSolicitudesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaSolicitudesMouseClicked
-        control.build_SA(conector, listaSolicitudes, id, tiempoEstimadoLbl, tiempoRealLbl, estatusLbl, solicitudLbl,nombreAvion);
+        control.build_SA(conector, listaSolicitudes,cl.getCL_id(), tiempoEstimadoLbl, tiempoRealLbl, estatusLbl, solicitudLbl,nombreAvion);
     }//GEN-LAST:event_listaSolicitudesMouseClicked
+
+    private void atrasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasBtnActionPerformed
+         control.activaVentana(ventana, this);
+    }//GEN-LAST:event_atrasBtnActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -304,6 +333,7 @@ public class MisSolicitudes extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton atrasBtn;
     private javax.swing.JLabel estatusLbl;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

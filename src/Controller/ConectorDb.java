@@ -14,9 +14,9 @@ public class ConectorDb {
 
     public void conectar() {
         conexion = null;
-        String urlDatabase = "jdbc:postgresql://localhost/airucab";
+        String urlDatabase = "jdbc:postgresql://localhost/cliente";
         String user = "postgres";
-        String password = "lavdbk3122";
+        String password = "chuo1997";
         try {
             Class.forName("org.postgresql.Driver");
             conexion = DriverManager.getConnection(urlDatabase, user, password);

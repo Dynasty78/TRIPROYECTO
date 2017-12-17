@@ -1,5 +1,6 @@
  package Interfaz;
 
+import Interfaz.Cliente.MenuUsuarioCliente;
 import Controller.ConectorDb;
 import Controller.Controladora;
 import Dominio.Cliente;

@@ -1,9 +1,10 @@
 
-package Interfaz;
+package Interfaz.Cliente;
 
 import Controller.Controladora;
 import Dominio.Cliente;
 import Dominio.Persona;
+import Interfaz.ListadeAviones;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -337,7 +338,7 @@ public class MenuUsuarioCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel11MouseExited
 
     private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
-        MisSolicitudes ventana = new MisSolicitudes();
+        MisSolicitudes ventana = new MisSolicitudes(this,cl);
         control.activaVentana(ventana, this);
     }//GEN-LAST:event_jPanel12MouseClicked
 
@@ -359,7 +360,7 @@ public class MenuUsuarioCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jPanel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseClicked
-        ListadeAviones ventana = new ListadeAviones(this);
+        ListadeAviones ventana = new ListadeAviones(this,cl);
         control.activaVentana(ventana, this);
     }//GEN-LAST:event_jPanel11MouseClicked
 
