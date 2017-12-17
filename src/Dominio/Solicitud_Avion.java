@@ -102,7 +102,6 @@ public class Solicitud_Avion {
 
             }
         } catch (SQLException ex) {
-            System.out.println("aqui");
             System.out.print(ex.toString());
         }
     }

@@ -45,7 +45,7 @@ public class Controladora {
     }
     public void cargarEstado(JComboBox combo){
         String driver = "org.postgresql.Driver";
-        String ruta = "jdbc:postgresql://localhost:5432/newdata";
+        String ruta = "jdbc:postgresql://localhost:5432/basededatos";
         String user = "postgres";
         String password = "m1l6o9q41m";
         
@@ -66,7 +66,7 @@ public class Controladora {
     }
     public void cargarMunicipio(String s,JComboBox combo){
         String driver = "org.postgresql.Driver";
-        String ruta = "jdbc:postgresql://localhost:5432/newdata";
+        String ruta = "jdbc:postgresql://localhost:5432/basededatos";
         String user = "postgres";
         String password = "m1l6o9q41m";
         combo.removeAllItems();
@@ -87,7 +87,7 @@ public class Controladora {
     }
     public void cargarParroquia(String estado,String municipio,JComboBox combo){
         String driver = "org.postgresql.Driver";
-        String ruta = "jdbc:postgresql://localhost:5432/newdata";
+        String ruta = "jdbc:postgresql://localhost:5432/basededatos";
         String user = "postgres";
         String password = "m1l6o9q41m";
         combo.removeAllItems();
@@ -394,7 +394,7 @@ public class Controladora {
    
    public int login(String usr,String pw){
         String driver = "org.postgresql.Driver";
-        String ruta = "jdbc:postgresql://localhost:5432/newdata";
+        String ruta = "jdbc:postgresql://localhost:5432/basededatos";
         String user = "postgres";
         String password = "m1l6o9q41m";
         int i = 0;
