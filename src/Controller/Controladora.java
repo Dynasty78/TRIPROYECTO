@@ -43,11 +43,34 @@ public class Controladora {
         combo.addItem("0426");
         combo.addItem("0412");
     }
+    
+    public void build_SA(ConectorDb conector,JTable table,int cl_id,JLabel tiempoEstimado,JLabel tiempoReal,JLabel estatus,JLabel solicitado_por,JLabel nombreAvion){
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        int selectedRowIndex = table.getSelectedRow();
+        int indice = Integer.parseInt(model.getValueAt(selectedRowIndex, 0).toString());        
+       try {
+            PreparedStatement pst = conector.conexion.prepareStatement("SELECT av_nombre,esa_nombre,pe_cedula FROM persona,cliente,solicitud_avion,avion,estatus_solicitud_avion WHERE cl_id = sa_cliente_id AND sa_avion_id = av_id AND cl_persona_id = pe_id AND sa_estatus_id = esa_id AND cl_id = '"+cl_id+"' and sa_id = '"+indice+"'");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                String av_nombre = rs.getString("av_nombre");
+                String esa_nombre = rs.getString("esa_nombre");
+                int pe_cedula = rs.getInt("pe_cedula");
+                nombreAvion.setText(av_nombre);
+                tiempoEstimado.setText("2 MONTHS");
+                tiempoReal.setText("2 MONTHS ");
+                estatus.setText(esa_nombre);
+                solicitado_por.setText(Integer.toString(pe_cedula));               
+            }
+        } catch (SQLException ex) {
+                
+                System.out.print(ex.toString());
+        }
+    }
     public void cargarEstado(JComboBox combo){
         String driver = "org.postgresql.Driver";
-        String ruta = "jdbc:postgresql://localhost:5432/newdata";
+        String ruta = "jdbc:postgresql://localhost:5432/cliente";
         String user = "postgres";
-        String password = "m1l6o9q41m";
+        String password = "chuo1997";
         
         try{
             Class.forName(driver);
@@ -66,9 +89,9 @@ public class Controladora {
     }
     public void cargarMunicipio(String s,JComboBox combo){
         String driver = "org.postgresql.Driver";
-        String ruta = "jdbc:postgresql://localhost:5432/newdata";
+        String ruta = "jdbc:postgresql://localhost:5432/cliente";
         String user = "postgres";
-        String password = "m1l6o9q41m";
+        String password = "chuo1997";
         combo.removeAllItems();
         try{
             Class.forName(driver);
@@ -87,9 +110,9 @@ public class Controladora {
     }
     public void cargarParroquia(String estado,String municipio,JComboBox combo){
         String driver = "org.postgresql.Driver";
-        String ruta = "jdbc:postgresql://localhost:5432/newdata";
+        String ruta = "jdbc:postgresql://localhost:5432/cliente";
         String user = "postgres";
-        String password = "m1l6o9q41m";
+        String password = "chuo1997";
         combo.removeAllItems();
         try{
             Class.forName(driver);
@@ -322,30 +345,7 @@ public class Controladora {
         public void limpiarCampo(JTextField x){
              x.setText("");
         }
-    
-   public void build_SA(ConectorDb conector,JTable table,int cl_id,JLabel tiempoEstimado,JLabel tiempoReal,JLabel estatus,JLabel solicitado_por,JLabel nombreAvion){
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        int selectedRowIndex = table.getSelectedRow();
-        int indice = Integer.parseInt(model.getValueAt(selectedRowIndex, 0).toString());        
-       try {
-            PreparedStatement pst = conector.conexion.prepareStatement("SELECT av_nombre,esa_nombre,pe_cedula FROM persona,cliente,solicitud_avion,avion,estatus_solicitud_avion WHERE cl_id = sa_cliente_id AND sa_avion_id = av_id AND cl_persona_id = pe_id AND sa_estatus_id = esa_id AND cl_id = '"+cl_id+"' and sa_id = '"+indice+"'");
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                String av_nombre = rs.getString("av_nombre");
-                String esa_nombre = rs.getString("esa_nombre");
-                int pe_cedula = rs.getInt("pe_cedula");
-                nombreAvion.setText(av_nombre);
-                tiempoEstimado.setText("2 MONTHS");
-                tiempoReal.setText("2 MONTHS ");
-                estatus.setText(esa_nombre);
-                solicitado_por.setText(Integer.toString(pe_cedula));               
-            }
-        } catch (SQLException ex) {
-                
-                System.out.print(ex.toString());
-        }
-    }
-   
+        
    public void actualizarVentanaplanta(JTable listaP,JLabel nombrePx,JLabel ubicacion, ConectorDb conector, JTable listaE ){
         DefaultTableModel model = (DefaultTableModel) listaP.getModel();
         int selectedRowIndex = listaP.getSelectedRow();
@@ -394,9 +394,9 @@ public class Controladora {
    
    public int login(String usr,String pw){
         String driver = "org.postgresql.Driver";
-        String ruta = "jdbc:postgresql://localhost:5432/newdata";
+        String ruta = "jdbc:postgresql://localhost:5432/cliente";
         String user = "postgres";
-        String password = "m1l6o9q41m";
+        String password = "chuo1997";
         int i = 0;
         String t;
         int cedula;

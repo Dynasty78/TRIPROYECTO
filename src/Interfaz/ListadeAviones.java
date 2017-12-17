@@ -3,6 +3,7 @@ package Interfaz;
 
 import Controller.ConectorDb;
 import Controller.Controladora;
+import Dominio.Cliente;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -11,7 +12,9 @@ public class ListadeAviones extends javax.swing.JFrame {
 
     Controladora control;
     ConectorDb conector;
+    Cliente cl;
     JFrame atras;
+    
     public ListadeAviones() {
         initComponents();
         control = new Controladora();
@@ -21,13 +24,14 @@ public class ListadeAviones extends javax.swing.JFrame {
         control.llenarTabla(listaAviones,control.getResultSet(conector,"select av_id,av_nombre from avion"));
     }
     
-    public ListadeAviones(JFrame ventana) {
+    public ListadeAviones(JFrame ventana,Cliente cl) {
         initComponents();
         control = new Controladora();
         conector = new ConectorDb();
         conector.conectar();
         control.iniciaVentana(this);
         atras = ventana;
+        this.cl = cl;
         control.llenarTabla(listaAviones,control.getResultSet(conector,"select av_id,av_nombre from avion"));
     }
 
@@ -229,7 +233,7 @@ public class ListadeAviones extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel98MouseClicked
 
     private void DetalleAvionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DetalleAvionMouseClicked
-        DetalleDeAvion ventana = new DetalleDeAvion(control.getIndex(listaAviones));
+        DetalleDeAvion ventana = new DetalleDeAvion(this,control.getIndex(listaAviones),cl);
         control.activaVentana(ventana, this);
         
         

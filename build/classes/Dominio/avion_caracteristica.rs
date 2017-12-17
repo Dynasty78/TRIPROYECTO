@@ -1,0 +1,1 @@
+Dominio.Avion_caracteristica
