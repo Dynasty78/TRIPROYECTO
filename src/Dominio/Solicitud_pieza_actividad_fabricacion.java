@@ -18,15 +18,6 @@ public class Solicitud_pieza_actividad_fabricacion {
     private int SPAF_pieza_id;
     private int SPAF_solicitud_id_avion;
 
-
-
-
-    // public Solicitud_pieza_actividad_fabricacion(int SPAF_solicitud_pieza_id, int SPAF_solicitud_id_avion,int SPAF_pieza_id) {
-    //     this.SPAF_solicitud_pieza_id = SPAF_solicitud_pieza_id;
-    //     this.SPAF_solicitud_id_avion = SPAF_solicitud_id_avion;
-    //     this.SPAF_pieza_id = SPAF_pieza_id;
-    //     // this.SPAF_aprobado = ;
-    // }
     public Solicitud_pieza_actividad_fabricacion(int SPAF_solicitud_pieza_id, int SPAF_pieza_id) {
         this.SPAF_solicitud_pieza_id = SPAF_solicitud_pieza_id;
         this.SPAF_pieza_id = SPAF_pieza_id;
@@ -48,14 +39,6 @@ public class Solicitud_pieza_actividad_fabricacion {
 
     public void generarSPAF(ConectorDb conector){
         try {
-            // String stm = "SELECT PAF_id FROM actividad_fabricacion,pieza,solicitud_pieza,pieza_actividad_fabricacion,solicitud_avion WHERE sp_pieza_id = pi_id AND paf_pieza_id = '"+SPAF_pieza_id+"' AND paf_actividad_id = af_id AND sp_id = '"+SPAF_solicitud_pieza_id+"' AND sa_id = '"+SPAF_solicitud_id_avion+"';";
-
-            // SELECT paf.paf_id, af_nombre, paf.paf_orden
-            // FROM actividad_fabricacion af
-            // INNER JOIN pieza_actividad_fabricacion paf ON af.af_id = paf.paf_actividad_id
-            // INNER JOIN pieza pz ON paf.paf_pieza_id = pz.pi_id
-            // WHERE pz.pi_id = 1
-            // ORDER BY paf.paf_orden
             String stm = 
                 "SELECT paf.paf_id, af_nombre, paf.paf_orden "+
                 "FROM actividad_fabricacion af "+

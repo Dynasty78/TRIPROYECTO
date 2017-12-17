@@ -1,4 +1,4 @@
-package Interfaz;
+package Interfaz.Cliente;
 
 import Controller.ConectorDb;
 import Controller.Controladora;

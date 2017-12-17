@@ -1,9 +1,10 @@
 
-package Interfaz;
+package Interfaz.Cliente;
 
 import Controller.Controladora;
 import Dominio.Cliente;
 import Dominio.Persona;
+import Interfaz.ListadeAviones;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 

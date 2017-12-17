@@ -65,19 +65,11 @@ public class Solicitud_Avion {
 
     public void agregarPieza(ConectorDb conector) {
         try {
-            // busco las piezas del avion
-
-            // SELECT pz.pi_id, pz.pi_nombre
-            // FROM pieza pz
-            // INNER JOIN avion_pieza ap ON pz.pi_id = ap.ap_pieza_id
-            // INNER JOIN avion av ON ap.ap_avion_id = av.av_id
-            // WHERE av.av_id = 1
-            String stm = 
-            "SELECT pz.pi_id, pz.pi_nombre "+
-            "FROM pieza pz "+
-            "INNER JOIN avion_pieza ap ON pz.pi_id = ap.ap_pieza_id "+
-            "INNER JOIN avion av ON ap.ap_avion_id = av.av_id "+
-            "WHERE av.av_id = " + SA_avion_id + " ";
+            String stm = "SELECT pz.pi_id, pz.pi_nombre "+
+                            "FROM pieza pz "+
+                            "INNER JOIN avion_pieza ap ON pz.pi_id = ap.ap_pieza_id "+
+                            "INNER JOIN avion av ON ap.ap_avion_id = av.av_id "+
+                            "WHERE av.av_id = " + SA_avion_id + " ";
 
 
             PreparedStatement pst = conector.conexion.prepareStatement(stm);
@@ -107,52 +99,7 @@ public class Solicitud_Avion {
         }
     }
 
-    // public void agregarMaterial(ConectorDb conector){
-    //     try {
-    //         PreparedStatement pst = conector.conexion.prepareStatement("select SP_ID,SP_PIEZA_ID FROM solicitud_pieza,solicitud_avion  where sp_solicitud_avion_id = sa_id AND sa_id = '"+getLastId(conector)+"'");
-    //         ResultSet rs = pst.executeQuery();
-    //         while (rs.next()) {
-    //             int SP_id = rs.getInt("SP_ID");
-    //             int SP_PIEZA_ID = rs.getInt("SP_PIEZA_ID");
-    //             SA_id = getLastId(conector);
-    //             Compra_material cm = new Compra_material(SP_id,getLastId(conector),SP_PIEZA_ID);
-    //             cm.generarCompra_Material(conector);
-
-    //         }
-    //     } catch (SQLException ex) {
-    //         System.out.print(ex.toString());
-    //     }
-    // }
-
-    // public void agregarSPAF(ConectorDb conector){
-    //     try {
-    //         PreparedStatement pst = conector.conexion.prepareStatement("select SP_ID,SP_PIEZA_ID FROM solicitud_pieza,solicitud_avion  where sp_solicitud_avion_id = sa_id AND sa_id = '"+getLastId(conector)+"'");
-    //         ResultSet rs = pst.executeQuery();
-    //         while (rs.next()) {
-    //             int SP_id = rs.getInt("SP_ID");
-    //             int SP_PIEZA_ID = rs.getInt("SP_PIEZA_ID");
-    //             SA_id = getLastId(conector);
-    //             Solicitud_pieza_actividad_fabricacion spaf = new Solicitud_pieza_actividad_fabricacion(SP_id,getLastId(conector),SP_PIEZA_ID);
-    //             spaf.generarSPAF(conector);
-    //         }
-    //     } catch (SQLException ex) {
-    //         System.out.print(ex.toString());
-    //     }
-    // }
-
     public int getLastId(ConectorDb conector) {
-        // int i = 0;
-        // try {
-        //     PreparedStatement pst = conector.conexion.prepareStatement("SELECT count(*) as cuenta FROM SOLICITUD_AVION");
-        //     ResultSet rs = pst.executeQuery();
-        //     while (rs.next()) {
-        //         i = rs.getInt("cuenta");
-        //         return i;
-        //     }
-        // } catch (SQLException ex) {
-        //     System.out.print(ex.toString());
-        // }
-        // return i;
         int i = 0;
         try {
             PreparedStatement pst = conector.conexion.prepareStatement("SELECT sa_id as id FROM solicitud_avion ORDER BY id DESC LIMIT 1");
@@ -170,8 +117,6 @@ public class Solicitud_Avion {
     public void generarSolicitud(ConectorDb conector) {
         agregarDb(conector);
         agregarPieza(conector);
-        // agregarMaterial(conector);
-        // agregarSPAF(conector);
     }
 
 }

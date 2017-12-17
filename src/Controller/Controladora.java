@@ -8,7 +8,6 @@ import Dominio.Planta;
 import Dominio.Proveedor;
 import Dominio.loged;
 import java.sql.Connection;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Date;
@@ -358,12 +357,12 @@ public class Controladora {
         Controladora control = new Controladora();
         
         llenarTablaEmpleados(listaE, control.getResultSet(conector,"SELECT zo.zo_nombre as zona, CONCAT(COALESCE(pe_nombre, ''), ' ', COALESCE(pe_segundo_nombre, ''), ' ', COALESCE(pe_apellido, ' '), ' ', COALESCE(pe_segundo_apellido, ' ')) as nombre \n" +
-"FROM planta pl \n" +
-"INNER JOIN zona_planta zp ON pl.pl_id = zp.zp_planta_id \n" +
-"INNER JOIN zona zo ON zp.zp_zona_id = zo.zo_id\n" +
-"LEFT JOIN empleado em ON  zo.zo_id = em.em_zona_planta_id\n" +
-"LEFT JOIN persona pe ON em.em_persona_id = pe.pe_id\n" +
-"WHERE em.em_cargo_id = 1 and pl_id = '"+indice+"'; "));
+                                                                    "FROM planta pl \n" +
+                                                                    "INNER JOIN zona_planta zp ON pl.pl_id = zp.zp_planta_id \n" +
+                                                                    "INNER JOIN zona zo ON zp.zp_zona_id = zo.zo_id\n" +
+                                                                    "LEFT JOIN empleado em ON  zo.zo_id = em.em_zona_planta_id\n" +
+                                                                    "LEFT JOIN persona pe ON em.em_persona_id = pe.pe_id\n" +
+                                                                    "WHERE em.em_cargo_id = 1 and pl_id = '"+indice+"'; "));
         
     }  
    
