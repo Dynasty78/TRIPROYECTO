@@ -18,7 +18,7 @@ public class Solicitud_pieza {
     public Solicitud_pieza(int SP_solicitud_avion_id, int SP_pieza_id) {
         this.SP_solicitud_avion_id = SP_solicitud_avion_id;
         this.SP_pieza_id = SP_pieza_id;
-        this.SP_estatus_id = 4;
+        this.SP_estatus_id = 1;
     }
 
     public int getSP_id() {
@@ -113,12 +113,24 @@ public class Solicitud_pieza {
     }
 
     public int getLastId(ConectorDb conector) {
+        // int i = 0;
+        // try {
+        //     PreparedStatement pst = conector.conexion.prepareStatement("select count(*) AS cuenta from Solicitud_pieza");
+        //     ResultSet rs = pst.executeQuery();
+        //     while (rs.next()) {
+        //         i = rs.getInt("cuenta");
+        //         return i;
+        //     }
+        // } catch (SQLException ex) {
+        //     System.out.print(ex.toString());
+        // }
+        // return i;
         int i = 0;
         try {
-            PreparedStatement pst = conector.conexion.prepareStatement("select count(*) AS cuenta from Solicitud_pieza");
+            PreparedStatement pst = conector.conexion.prepareStatement("SELECT sp_id as id FROM Solicitud_pieza ORDER BY id DESC LIMIT 1");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                i = rs.getInt("cuenta");
+                i = rs.getInt("id");
                 return i;
             }
         } catch (SQLException ex) {
