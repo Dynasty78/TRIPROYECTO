@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 public class Compra_material {
     private int CM_id;
@@ -119,6 +120,9 @@ public class Compra_material {
                 insert_pst.close();
             }
 
+            int primera_prueba = siguientePruebaSinCompletar(conector, compra_material_id);
+            settearFechaInicialPrueba(conector, primera_prueba);
+
         } catch(SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -137,6 +141,48 @@ public class Compra_material {
             System.out.print(ex.toString());
         }
         return i;
+    }
+
+    public int siguientePruebaSinCompletar(ConectorDb conector, int compra_material_id)
+    {
+        // SELECT pmc_id
+        // FROM prueba_material_compra
+        // WHERE pmc_compra_material_id = 1 AND pmc_aprobado IS NULL
+        // LIMIT 2
+        try {
+            String stm = 
+            "SELECT pmc_id "+
+            "FROM prueba_material_compra "+
+            "WHERE pmc_compra_material_id =" + compra_material_id + "AND pmc_aprobado IS NULL "+
+            "LIMIT 1 ";
+
+            PreparedStatement pst = conector.conexion.prepareStatement(stm);
+            ResultSet rs = pst.executeQuery();
+
+            int prueba_material_compra_id = 0;
+            if (rs.next()) {
+                prueba_material_compra_id = rs.getInt("pmc_id");
+            }
+
+            return prueba_material_compra_id;
+        } catch (SQLException ex) {
+            System.out.print(ex.toString());
+        }
+        return 0;
+    }
+
+    public void settearFechaInicialPrueba(ConectorDb conector, int prueba_material_compra_id)
+    {
+        try {
+            String stm = "UPDATE prueba_material_compra SET pmc_fecha_inicio = ? WHERE pmc_id = ?";
+            PreparedStatement pst = conector.conexion.prepareStatement(stm);
+            pst.setDate(1, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+            pst.setInt(2, prueba_material_compra_id);
+            pst.executeUpdate();
+            pst.close();
+        } catch (SQLException ex) {
+            System.out.print(ex.toString());
+        }
     }
 }
 
