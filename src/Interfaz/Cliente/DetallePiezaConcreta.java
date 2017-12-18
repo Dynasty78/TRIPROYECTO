@@ -31,9 +31,10 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
         control.llenarTabla3(tablaPieza,control.getResultSet(conector,"SELECT sp_id,af_id,af_nombre\n" +
                                                                     "FROM solicitud_pieza,pieza,pieza_actividad_fabricacion,solicitud_pieza_actividad_fabricacion,actividad_fabricacion\n" +
                                                                     "WHERE sp_pieza_id = pi_id and paf_pieza_id = '"+codigoPieza+"' and spaf_solicitud_pieza_id = sp_id and paf_id = spaf_pieza_actividad_fabricacion_id and paf_actividad_id = af_id"));
-    
-    
-    
+        
+        control.llenarTabla7(otraTabla, control.getResultSet(conector,"SELECT SPAF_SOLICITUD_PIEZA_ID,SPAF_PIEZA_ACTIVIDAD_FABRICACION_ID,pl_nombre,zo_nombre,spaf_fecha_inicio,spaf_fecha_fin,pe_nombre,spaf_aprobado "
+                                                                    + "FROM pieza,pieza_actividad_fabricacion,zona_planta,zona,planta,actividad_fabricacion,solicitud_pieza_actividad_fabricacion,empleado,cargo_empleado,persona "
+                                                                    + "WHERE pi_id = paf_pieza_id AND paf_zona_planta_id = zp_id AND af_id = paf_actividad_id AND zp_zona_id = zo_id AND zp_planta_id = pl_id AND spaf_pieza_actividad_fabricacion_id = paf_id AND zp_id = em_zona_planta_id AND ce_id = em_cargo_id AND em_cargo_id = 1 AND em_persona_id = pe_id and pi_id = '"+codigoPieza+"'"));
     }
     
     public DetallePiezaConcreta(JFrame ventanas,Empleado em,int solicitud,int codigoPieza){
@@ -43,11 +44,12 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
         this.ventana = ventanas;
         this.em = em;
         conector.conectar();
+       
         control.llenarTabla3(tablaPieza,control.getResultSet(conector,"SELECT sp_id,af_id,af_nombre\n" +
                                                                     "FROM solicitud_pieza,pieza,pieza_actividad_fabricacion,solicitud_pieza_actividad_fabricacion,actividad_fabricacion\n" +
                                                                     "WHERE sp_pieza_id = pi_id and paf_pieza_id = '"+codigoPieza+"' and spaf_solicitud_pieza_id = sp_id and paf_id = spaf_pieza_actividad_fabricacion_id and paf_actividad_id = af_id"));
                 
-        control.llenarTabla7(otraTabla, control.getResultSet(conector,"SELECT SPAF_SOLICITUD_PIEZA_ID,SPAF_PIEZA_ACTIVIDAD_FABRICACION_ID,pl_nombre,zo_nombre,spaf_fecha_inicio,spaf_fecha_fin,pe_nombre,pi_id "
+        control.llenarTabla7(otraTabla, control.getResultSet(conector,"SELECT SPAF_SOLICITUD_PIEZA_ID,SPAF_PIEZA_ACTIVIDAD_FABRICACION_ID,pl_nombre,zo_nombre,spaf_fecha_inicio,spaf_fecha_fin,pe_nombre,spaf_aprobado "
                                                                     + "FROM pieza,pieza_actividad_fabricacion,zona_planta,zona,planta,actividad_fabricacion,solicitud_pieza_actividad_fabricacion,empleado,cargo_empleado,persona "
                                                                     + "WHERE pi_id = paf_pieza_id AND paf_zona_planta_id = zp_id AND af_id = paf_actividad_id AND zp_zona_id = zo_id AND zp_planta_id = pl_id AND spaf_pieza_actividad_fabricacion_id = paf_id AND zp_id = em_zona_planta_id AND ce_id = em_cargo_id AND em_cargo_id = 1 AND em_persona_id = pe_id and pi_id = '"+codigoPieza+"'"));
     
@@ -71,6 +73,7 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         saveBtn = new javax.swing.JButton();
         endCheck = new javax.swing.JCheckBox();
+        failCheck = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -207,7 +210,9 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
             }
         });
 
-        endCheck.setText("Finalizado");
+        endCheck.setText("Aprobado");
+
+        failCheck.setText("Fallido");
 
         javax.swing.GroupLayout panelEditLayout = new javax.swing.GroupLayout(panelEdit);
         panelEdit.setLayout(panelEditLayout);
@@ -216,9 +221,11 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
             .addGroup(panelEditLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(endCheck)
                     .addComponent(jLabel2)
-                    .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(failCheck, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(endCheck, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         panelEditLayout.setVerticalGroup(
@@ -228,12 +235,14 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(17, 17, 17)
                 .addComponent(endCheck)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
+                .addComponent(failCheck)
                 .addGap(18, 18, 18)
                 .addComponent(saveBtn)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
 
-        jPanel2.add(panelEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 290, 110, 130));
+        jPanel2.add(panelEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 290, 110, 170));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 960, 560));
 
@@ -271,6 +280,12 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
         if (endCheck.isSelected()){
             spaf.setSPAF_aprobado();
             spaf.setSPAF_fecha_fin();
+            otraTabla.repaint();
+        }
+        if(failCheck.isSelected()){
+            spaf.setSPAF_notaprobado();
+            spaf.setSPAF_fecha_fin();
+            otraTabla.repaint();
         }
         spaf.modificarDb(conector);
     }//GEN-LAST:event_saveBtnActionPerformed
@@ -323,6 +338,7 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox endCheck;
+    private javax.swing.JCheckBox failCheck;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

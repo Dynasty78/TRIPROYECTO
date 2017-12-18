@@ -49,6 +49,9 @@ public class Solicitud_pieza_actividad_fabricacion {
     public void setSPAF_aprobado() {
         this.SPAF_aprobado = true;
     }
+    public void setSPAF_notaprobado() {
+        this.SPAF_aprobado = false;
+    }    
 
     public void setSPAF_fecha_fin() {
         Calendar calendar = Calendar.getInstance();

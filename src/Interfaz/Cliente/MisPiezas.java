@@ -33,10 +33,10 @@ public class MisPiezas extends javax.swing.JFrame {
         this.ventana = ventana;
         this.cl = cl;
         this.solicitud = solicitud;
-        control.llenarTabla(listaPiezas,control.getResultSet(conector,"SELECT pi_id,pi_nombre,sa_id "
-                                                                    + "FROM solicitud_avion,cliente,solicitud_pieza,pieza "
+        control.llenarTabla32(listaPiezas,control.getResultSet(conector,"SELECT pi_id,pi_nombre,esa_nombre "
+                                                                    + "FROM solicitud_avion,cliente,solicitud_pieza,pieza,estatus_solicitud_avion  "
                                                                     + "WHERE sa_cliente_id = cl_id and cl_id ='"+cl.getCL_id()+"'  "
-                                                                    + "AND sp_solicitud_avion_id = sa_id and sa_id = '"+solicitud+"'  AND sp_pieza_id = pi_id"));
+                                                                    + "AND sp_solicitud_avion_id = sa_id and sa_id = '"+solicitud+"'  AND sp_pieza_id = pi_id AND sa_estatus_id = esa_id"));
     }
     
     public MisPiezas(JFrame ventana,Empleado em,int solicitud){
@@ -49,7 +49,7 @@ public class MisPiezas extends javax.swing.JFrame {
         this.cl = cl;
         this.em = em;
         this.solicitud = solicitud;
-        control.llenarTabla(listaPiezas,control.getResultSet(conector,"select pi_id,pi_nombre from solicitud_avion,solicitud_pieza,pieza where sa_id = '"+solicitud+"' and sp_pieza_id = pi_id"));
+        control.llenarTabla(listaPiezas,control.getResultSet(conector,"select pi_id,pi_nombre from solicitud_avion,solicitud_pieza,pieza where SA_ID = '"+solicitud+"' AND sa_id = sp_solicitud_avion_id and sp_pieza_id = pi_id  "));
     }
     
     

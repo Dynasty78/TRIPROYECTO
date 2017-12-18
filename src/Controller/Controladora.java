@@ -197,7 +197,51 @@ public class Controladora {
             JOptionPane.showMessageDialog(null, e);
         }
     }
+    
+    public static void llenarTabla9(JTable x, ResultSet rs) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Codigo compra");
+        modelo.addColumn("Nombre material");
+        x.setModel(modelo);
+        try {
+            while (rs.next()) {
+                Object[] fila = new Object[2];
 
+                // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                for (int i = 0; i < 2; i++)
+                    fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+
+                // Se añade al modelo la fila completa.
+                modelo.addRow(fila);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    
+    public static void llenarTabla32(JTable x,ResultSet rs){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Cod. Solicitud Pieza");
+        modelo.addColumn("Cod. Actividad");
+        modelo.addColumn("Estatus");
+        x.setModel(modelo);
+        try {
+            while (rs.next()) {
+                Object[] fila = new Object[3];
+
+                // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                for (int i = 0; i < 3; i++)
+                    fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+
+                // Se añade al modelo la fila completa.
+                modelo.addRow(fila);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }    
+    
+    }
     public static void llenarTabla3(JTable x,ResultSet rs){
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("Cod. Solicitud Pieza");
@@ -221,6 +265,7 @@ public class Controladora {
     
     }
     
+   
     public void llenarTabla7(JTable x, ResultSet rs){
         
         DefaultTableModel modelo = new DefaultTableModel();
@@ -231,14 +276,15 @@ public class Controladora {
         modelo.addColumn("Fecha Inicio");
         modelo.addColumn("Fecha Fin");
         modelo.addColumn("Nom.Encargado");
+        modelo.addColumn("Status");
         x.setModel(modelo);
         
         try {
             while (rs.next()) {
-                Object[] fila = new Object[7];
+                Object[] fila = new Object[8];
 
                 // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 8; i++)
                     fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
 
                 // Se añade al modelo la fila completa.
@@ -249,7 +295,7 @@ public class Controladora {
         }    
         
     }
- 
+    
     public static Persona buscaCodigoPersona(ConectorDb conector, int CEDULA) {
         Persona x = null;
         try { 
@@ -448,6 +494,38 @@ public class Controladora {
                                                                     "WHERE em.em_cargo_id = 1 and pl_id = '"+indice+"'; "));
         
     }  
+   
+   public void actualizarPruebas(JTable listaP, ConectorDb conector, JTable listaE ){
+        DefaultTableModel model = (DefaultTableModel) listaP.getModel();
+        int selectedRowIndex = listaP.getSelectedRow();
+        int indice = Integer.parseInt(model.getValueAt(selectedRowIndex, 0).toString());      
+        String nombreP = model.getValueAt(selectedRowIndex, 1).toString();     
+        
+        Controladora control = new Controladora();
+        
+        llenarTablapruebas(listaE, control.getResultSet(conector,"SELECT pru_nombre, ma_nombre from material, prueba_material, prueba where ma_id = pm_material_id and pru_id = pm_prueba_id and ma_id = '"+indice+"'"));
+    }  
+   
+   public static void llenarTablapruebas(JTable x, ResultSet rs) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Prueba");
+        
+        x.setModel(modelo);
+        try {
+            while (rs.next()) {
+                Object[] fila = new Object[1];
+
+                // Se rellena cada posgetción del array con una de las columnas de la tabla en base de datos.
+                for (int i = 0; i < 1; i++)
+                    fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+
+                // Se añade al modelo la fila completa.
+                modelo.addRow(fila);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
    
    public static void llenarTablaEmpleados(JTable x, ResultSet rs) {
         DefaultTableModel modelo = new DefaultTableModel();
