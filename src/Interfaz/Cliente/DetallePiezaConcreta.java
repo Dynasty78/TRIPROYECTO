@@ -32,6 +32,8 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
                                                                     "FROM solicitud_pieza,pieza,pieza_actividad_fabricacion,solicitud_pieza_actividad_fabricacion,actividad_fabricacion\n" +
                                                                     "WHERE sp_pieza_id = pi_id and paf_pieza_id = '"+codigoPieza+"' and spaf_solicitud_pieza_id = sp_id and paf_id = spaf_pieza_actividad_fabricacion_id and paf_actividad_id = af_id"));
     
+    
+    
     }
     
     public DetallePiezaConcreta(JFrame ventanas,Empleado em,int solicitud,int codigoPieza){
@@ -41,6 +43,10 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
         this.ventana = ventanas;
         this.em = em;
         conector.conectar();
+        control.llenarTabla3(tablaPieza,control.getResultSet(conector,"SELECT sp_id,af_id,af_nombre\n" +
+                                                                    "FROM solicitud_pieza,pieza,pieza_actividad_fabricacion,solicitud_pieza_actividad_fabricacion,actividad_fabricacion\n" +
+                                                                    "WHERE sp_pieza_id = pi_id and paf_pieza_id = '"+codigoPieza+"' and spaf_solicitud_pieza_id = sp_id and paf_id = spaf_pieza_actividad_fabricacion_id and paf_actividad_id = af_id"));
+                
         control.llenarTabla7(otraTabla, control.getResultSet(conector,"SELECT SPAF_SOLICITUD_PIEZA_ID,SPAF_PIEZA_ACTIVIDAD_FABRICACION_ID,pl_nombre,zo_nombre,spaf_fecha_inicio,spaf_fecha_fin,pe_nombre,pi_id "
                                                                     + "FROM pieza,pieza_actividad_fabricacion,zona_planta,zona,planta,actividad_fabricacion,solicitud_pieza_actividad_fabricacion,empleado,cargo_empleado,persona "
                                                                     + "WHERE pi_id = paf_pieza_id AND paf_zona_planta_id = zp_id AND af_id = paf_actividad_id AND zp_zona_id = zo_id AND zp_planta_id = pl_id AND spaf_pieza_actividad_fabricacion_id = paf_id AND zp_id = em_zona_planta_id AND ce_id = em_cargo_id AND em_cargo_id = 1 AND em_persona_id = pe_id and pi_id = '"+codigoPieza+"'"));
@@ -158,6 +164,11 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3"
             }
         ));
+        tablaPieza.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaPiezaMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tablaPieza);
 
         jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 37, 310, 500));
@@ -263,6 +274,10 @@ public class DetallePiezaConcreta extends javax.swing.JFrame {
         }
         spaf.modificarDb(conector);
     }//GEN-LAST:event_saveBtnActionPerformed
+
+    private void tablaPiezaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPiezaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tablaPiezaMouseClicked
 
     /**
      * @param args the command line arguments
