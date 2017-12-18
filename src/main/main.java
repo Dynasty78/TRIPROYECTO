@@ -18,8 +18,8 @@ public class main {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.set(Calendar.MONTH, 4); // Assuming you wanted May 1st
         java.sql.Date date = new java.sql.Date(calendar.getTime().getTime());
-        Solicitud_Avion SA = new Solicitud_Avion(2,1);
-        SA.generarSolicitud(conector);
+        //Solicitud_Avion SA = new Solicitud_Avion(2,1);
+        //SA.generarSolicitud(conector);
 
     }
 }

@@ -115,6 +115,9 @@ public class MenuEmpleado extends javax.swing.JFrame {
             }
         });
         jPanel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel11MouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jPanel11MouseExited(evt);
             }
@@ -170,17 +173,19 @@ public class MenuEmpleado extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(51, 102, 255));
-        jLabel8.setText("Piezas");
+        jLabel8.setText("Solicitudes");
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(35, Short.MAX_VALUE)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8))
+                    .addComponent(jLabel8)
+                    .addGroup(jPanel12Layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(jLabel7)))
                 .addGap(42, 42, 42))
         );
         jPanel12Layout.setVerticalGroup(
@@ -317,7 +322,8 @@ public class MenuEmpleado extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel11MouseExited
 
     private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
-        // TODO add your handling code here:
+            SolicitudesDeAviones ventana = new SolicitudesDeAviones(this,em);
+            control.activaVentana(ventana, this);
     }//GEN-LAST:event_jPanel12MouseClicked
 
     private void jPanel12MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseExited
@@ -335,6 +341,11 @@ public class MenuEmpleado extends javax.swing.JFrame {
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         this.setState(MenuEmpleado.ICONIFIED);
     }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void jPanel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseClicked
+            Plantas p = new Plantas(this,em);
+            control.activaVentana(p, this);
+    }//GEN-LAST:event_jPanel11MouseClicked
 
     public void setColor(JPanel panel){
         panel.setBackground(new java.awt.Color(197,197,197));

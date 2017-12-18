@@ -263,7 +263,8 @@ import javax.swing.JOptionPane;
     }// </editor-fold>//GEN-END:initComponents
 
     private void mispiezasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mispiezasBtnActionPerformed
-        // TODO add your handling code here:
+            MisPiezas ventana = new MisPiezas(this,cl,control.getIndex(listaSolicitudes));
+            control.activaVentana(ventana, this);
     }//GEN-LAST:event_mispiezasBtnActionPerformed
 
     private void jLabel99MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel99MouseClicked

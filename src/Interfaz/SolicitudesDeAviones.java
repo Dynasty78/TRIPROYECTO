@@ -1,5 +1,5 @@
-package Interfaz.Cliente;
-
+package Interfaz;
+import Interfaz.Cliente.*;
 import Controller.ConectorDb;
 import Controller.Controladora;
 import Dominio.Cliente;
@@ -7,53 +7,34 @@ import Dominio.Empleado;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class MisPiezas extends javax.swing.JFrame {
+    public class SolicitudesDeAviones extends javax.swing.JFrame {
 
-     Controladora control;
-     ConectorDb conector;
-     
-     Cliente cl;
-     JFrame ventana;
-    
-     int solicitud;
-     Empleado em;
-     public MisPiezas() {
+    Controladora control;
+    ConectorDb conector;
+    JFrame ventana;
+    Cliente cl;
+    Empleado em;
+    public SolicitudesDeAviones() {
         initComponents();
         control = new Controladora();
-        control.iniciaVentana(this);
-    }
-    
-    public MisPiezas(JFrame ventana,Cliente cl,int solicitud){
-        initComponents();
-        control = new Controladora();
-        control.iniciaVentana(this);
-        
         conector = new ConectorDb();
         conector.conectar();
-        this.ventana = ventana;
-        this.cl = cl;
-        this.solicitud = solicitud;
-        control.llenarTabla(listaPiezas,control.getResultSet(conector,"SELECT pi_id,pi_nombre,sa_id "
-                                                                    + "FROM solicitud_avion,cliente,solicitud_pieza,pieza "
-                                                                    + "WHERE sa_cliente_id = cl_id and cl_id ='"+cl.getCL_id()+"'  "
-                                                                    + "AND sp_solicitud_avion_id = sa_id and sa_id = '"+solicitud+"'  AND sp_pieza_id = pi_id"));
+        control.iniciaVentana(this);
+       
     }
     
-    public MisPiezas(JFrame ventana,Empleado em,int solicitud){
+    public SolicitudesDeAviones(JFrame x,Empleado em) {
         initComponents();
         control = new Controladora();
-        control.iniciaVentana(this);
         conector = new ConectorDb();
         conector.conectar();
-        this.ventana = ventana;
-        this.cl = cl;
+        ventana = x;
         this.em = em;
-        this.solicitud = solicitud;
-        control.llenarTabla(listaPiezas,control.getResultSet(conector,"select pi_id,pi_nombre from solicitud_avion,solicitud_pieza,pieza where sa_id = '"+solicitud+"' and sp_pieza_id = pi_id"));
+        this.cl = cl;
+        control.iniciaVentana(this);
+        control.llenarTabla(listaSolicitudes,control.getResultSet(conector,"select sa_id,av_nombre from solicitud_avion, avion where sa_avion_id = av_id"));
     }
     
-    
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -64,20 +45,26 @@ public class MisPiezas extends javax.swing.JFrame {
         jLabel99 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listaPiezas = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        listaSolicitudes = new javax.swing.JTable();
+        nombreAvion = new javax.swing.JLabel();
+        tiempoEstimadoLbl = new javax.swing.JLabel();
+        tiempoRealLbl = new javax.swing.JLabel();
+        estatusLbl = new javax.swing.JLabel();
+        solicitudLbl = new javax.swing.JLabel();
+        mispiezasBtn = new javax.swing.JButton();
+        atrasBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(25, 118, 210));
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Mis Piezas");
+        jLabel1.setText("Lista de Solicitudes de Aviones");
 
         jLabel98.setBackground(new java.awt.Color(255, 255, 255));
         jLabel98.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
@@ -85,7 +72,6 @@ public class MisPiezas extends javax.swing.JFrame {
         jLabel98.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel98.setText("X");
         jLabel98.setToolTipText("");
-        jLabel98.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel98.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel98MouseClicked(evt);
@@ -109,15 +95,15 @@ public class MisPiezas extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel1)
-                .addContainerGap(833, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(558, Short.MAX_VALUE)
                 .addComponent(jLabel99, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel98)
-                .addGap(22, 22, 22))
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,16 +111,17 @@ public class MisPiezas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel98)
                     .addComponent(jLabel99))
-                .addGap(15, 15, 15)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addGap(0, 39, Short.MAX_VALUE))
+                .addGap(0, 28, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 950, 100));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 90));
 
         jPanel2.setBackground(java.awt.Color.white);
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        listaPiezas.setModel(new javax.swing.table.DefaultTableModel(
+        listaSolicitudes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -145,70 +132,55 @@ public class MisPiezas extends javax.swing.JFrame {
                 "Title 1", "Title 2"
             }
         ));
-        jScrollPane1.setViewportView(listaPiezas);
-
-        jButton2.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 102, 255));
-        jButton2.setText("Atras");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        listaSolicitudes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+                listaSolicitudesMouseClicked(evt);
             }
         });
+        jScrollPane1.setViewportView(listaSolicitudes);
 
-        jButton3.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(0, 102, 255));
-        jButton3.setText("Ver Detalle");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 550, 420));
+
+        nombreAvion.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jPanel2.add(nombreAvion, new org.netbeans.lib.awtextra.AbsoluteConstraints(382, 221, -1, -1));
+
+        tiempoEstimadoLbl.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jPanel2.add(tiempoEstimadoLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(444, 239, -1, -1));
+
+        tiempoRealLbl.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jPanel2.add(tiempoRealLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(444, 245, -1, -1));
+
+        estatusLbl.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jPanel2.add(estatusLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(382, 251, -1, -1));
+
+        solicitudLbl.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jPanel2.add(solicitudLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(444, 257, -1, -1));
+
+        mispiezasBtn.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
+        mispiezasBtn.setForeground(new java.awt.Color(0, 102, 255));
+        mispiezasBtn.setText("Mis Piezas");
+        mispiezasBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                mispiezasBtnActionPerformed(evt);
             }
         });
+        jPanel2.add(mispiezasBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 470, -1, -1));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 913, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(70, Short.MAX_VALUE))
-        );
+        atrasBtn.setText("Atras");
+        atrasBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atrasBtnActionPerformed(evt);
+            }
+        });
+        jPanel2.add(atrasBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 470, -1, -1));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 87, 950, 520));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 67, 610, 510));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-            if (cl != null){
-                DetallePiezaConcreta dpc = new DetallePiezaConcreta(this,cl,solicitud,control.getIndex(listaPiezas));
-                control.activaVentana(dpc, this);
-            }
-            else{
-                DetallePiezaConcreta dpc = new DetallePiezaConcreta(this,em,solicitud,control.getIndex(listaPiezas));
-                control.activaVentana(dpc, this);      
-            }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jLabel99MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel99MouseClicked
-       this.setState(MisPiezas.ICONIFIED);
+        this.setState(SolicitudesDeAviones.ICONIFIED);
     }//GEN-LAST:event_jLabel99MouseClicked
 
     private void jLabel98MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel98MouseClicked
@@ -219,11 +191,26 @@ public class MisPiezas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jLabel98MouseClicked
 
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+    private void atrasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasBtnActionPerformed
         control.activaVentana(ventana, this);
-    }//GEN-LAST:event_jButton2MouseClicked
+    }//GEN-LAST:event_atrasBtnActionPerformed
 
-    
+    private void mispiezasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mispiezasBtnActionPerformed
+        MisPiezas ventana = new MisPiezas(this,em,control.getIndex(listaSolicitudes));
+        control.activaVentana(ventana, this);
+    }//GEN-LAST:event_mispiezasBtnActionPerformed
+
+    private void listaSolicitudesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaSolicitudesMouseClicked
+     
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_listaSolicitudesMouseClicked
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -238,14 +225,30 @@ public class MisPiezas extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MisPiezas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SolicitudesDeAviones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MisPiezas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SolicitudesDeAviones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MisPiezas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SolicitudesDeAviones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MisPiezas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SolicitudesDeAviones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -266,20 +269,24 @@ public class MisPiezas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MisPiezas().setVisible(true);
+                new SolicitudesDeAviones().setVisible(true);
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton atrasBtn;
+    private javax.swing.JLabel estatusLbl;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel98;
     private javax.swing.JLabel jLabel99;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable listaPiezas;
+    private javax.swing.JTable listaSolicitudes;
+    private javax.swing.JButton mispiezasBtn;
+    private javax.swing.JLabel nombreAvion;
+    private javax.swing.JLabel solicitudLbl;
+    private javax.swing.JLabel tiempoEstimadoLbl;
+    private javax.swing.JLabel tiempoRealLbl;
     // End of variables declaration//GEN-END:variables
 }

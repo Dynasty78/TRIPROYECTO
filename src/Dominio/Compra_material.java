@@ -40,27 +40,8 @@ public class Compra_material {
         }
     }
 
-    // public void generarCompra_Material(ConectorDb conector) {
-    //     try {
-    //         PreparedStatement pst = conector.conexion.prepareStatement("SELECT mp_material_id FROM solicitud_pieza,pieza,material_pieza,material,solicitud_avion WHERE sp_pieza_id = PI_ID AND mp_pieza_id = '"+CM_pieza_id+"' AND mp_material_id = ma_id AND sa_id = sp_solicitud_avion_id AND sa_id = '"+CM_solicitud_id_avion+"' AND sp_id = '"+CM_solicitud_pieza_id+"' ");
-    //         ResultSet rs = pst.executeQuery();
-    //         while (rs.next()) {
-    //             this.CM_material_id = rs.getInt("mp_material_id");
-    //             agregarDb(conector);
-    //         }
-    //     } catch (SQLException ex) {
-    //         System.out.print(ex.toString());
-    //     }
-    // }
-
      public void generarCompra_Material(ConectorDb conector) {
         try {
-            // SELECT ma_id, ma_nombre, mp_cantidad_material 
-            // FROM material ma 
-            // INNER JOIN material_pieza mp ON ma.ma_id = mp.mp_material_id 
-            // INNER JOIN pieza pz ON mp.mp_pieza_id = pz.pi_id 
-            // WHERE pz.pi_id = 1
-
             String stm = 
             "SELECT ma_id, ma_nombre, mp_cantidad_material "+
             " FROM material ma "+
@@ -75,7 +56,6 @@ public class Compra_material {
                 for (int i = 0; i < rs.getInt("mp_cantidad_material"); i++) {
                     this.CM_material_id = rs.getInt("ma_id");
                     agregarDb(conector);
-
                     // generar pruebas para las compras
                     generarPruebas(conector, CM_material_id, getLastId(conector));
                 }
@@ -89,12 +69,7 @@ public class Compra_material {
     {
 
         try {
-            // SELECT pm_id, ma.ma_id, ma.ma_nombre, pru.pru_id, pru.pru_nombre
-            // FROM material ma
-            // INNER JOIN prueba_material pm ON ma.ma_id = pm.pm_material_id
-            // INNER JOIN prueba pru ON pm.pm_prueba_id = pru.pru_id
-            // WHERE ma.ma_id = 4
-            // ORDER BY pm.pm_orden
+
 
             String stm = 
             "SELECT pm.pm_id, ma.ma_id, ma.ma_nombre, pru.pru_id, pru.pru_nombre "+
@@ -145,10 +120,6 @@ public class Compra_material {
 
     public int siguientePruebaSinCompletar(ConectorDb conector, int compra_material_id)
     {
-        // SELECT pmc_id
-        // FROM prueba_material_compra
-        // WHERE pmc_compra_material_id = 1 AND pmc_aprobado IS NULL
-        // LIMIT 2
         try {
             String stm = 
             "SELECT pmc_id "+

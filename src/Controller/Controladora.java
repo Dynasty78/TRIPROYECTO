@@ -6,6 +6,7 @@ import Dominio.Empleado;
 import Dominio.Persona;
 import Dominio.Planta;
 import Dominio.Proveedor;
+import Dominio.Solicitud_pieza_actividad_fabricacion;
 import Dominio.loged;
 import java.sql.Connection;
 import javax.swing.*;
@@ -16,13 +17,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Controladora {
     loged log;
-
+    
     public Controladora() {
+        
     }
-
     /*-------> Ventanas <-------*/
     public void iniciaVentana(JFrame ventana) {
         ventana.setResizable(false);
@@ -65,6 +67,7 @@ public class Controladora {
                 System.out.print(ex.toString());
         }
     }
+    
     public void cargarEstado(JComboBox combo){
         String driver = "org.postgresql.Driver";
         String ruta = "jdbc:postgresql://localhost:5432/cliente";
@@ -86,6 +89,7 @@ public class Controladora {
             JOptionPane.showMessageDialog(null,e);
         } 
     }
+    
     public void cargarMunicipio(String s,JComboBox combo){
         String driver = "org.postgresql.Driver";
         String ruta = "jdbc:postgresql://localhost:5432/cliente";
@@ -107,6 +111,7 @@ public class Controladora {
             JOptionPane.showMessageDialog(null,e);
         } 
     }
+    
     public void cargarParroquia(String estado,String municipio,JComboBox combo){
         String driver = "org.postgresql.Driver";
         String ruta = "jdbc:postgresql://localhost:5432/cliente";
@@ -128,6 +133,7 @@ public class Controladora {
             JOptionPane.showMessageDialog(null,e);
         } 
     }   
+    
     public static ResultSet getResultSet(ConectorDb conector, String query) {
         try {
             PreparedStatement pst = conector.conexion.prepareStatement(query);
@@ -138,6 +144,7 @@ public class Controladora {
         }
         return null;
     }
+    
     public static Planta buscarCodigoPlanta(ConectorDb conector,int id){
         Planta x = null;
         try {
@@ -154,10 +161,8 @@ public class Controladora {
         }
         return x;
     }
-    
-    
-    
-       public String getUbicacion(ConectorDb conector, int index, String nombreP){
+     
+    public String getUbicacion(ConectorDb conector, int index, String nombreP){
           String ubicacion = "";
         try {
             PreparedStatement pst = conector.conexion.prepareStatement("SELECT LU_NOMBRE AS UBICACION FROM LUGAR, PLANTA WHERE PL_ID = '"+index+"' AND LU_ID = PL_LUGAR_ID");
@@ -171,8 +176,7 @@ public class Controladora {
         }
         return ubicacion;
     }
-    
-    
+       
     public static void llenarTabla(JTable x, ResultSet rs) {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("Codigo");
@@ -194,9 +198,61 @@ public class Controladora {
         }
     }
 
+    public static void llenarTabla3(JTable x,ResultSet rs){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Cod. Solicitud Pieza");
+        modelo.addColumn("Cod. Actividad");
+        modelo.addColumn("Nom. Actividad");
+        x.setModel(modelo);
+        try {
+            while (rs.next()) {
+                Object[] fila = new Object[3];
+
+                // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                for (int i = 0; i < 3; i++)
+                    fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+
+                // Se añade al modelo la fila completa.
+                modelo.addRow(fila);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }    
+    
+    }
+    
+    public void llenarTabla7(JTable x, ResultSet rs){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID_SSP");
+        modelo.addColumn("ID_SPA");
+        modelo.addColumn("Nom.Planta");
+        modelo.addColumn("Nom.Zona");
+        modelo.addColumn("Fecha Inicio");
+        modelo.addColumn("Fecha Fin");
+        modelo.addColumn("Nom.Encargado");
+        x.setModel(modelo);
+        
+        try {
+            while (rs.next()) {
+                Object[] fila = new Object[7];
+
+                // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                for (int i = 0; i < 7; i++)
+                    fila[i] = rs.getObject(i + 1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+
+                // Se añade al modelo la fila completa.
+                modelo.addRow(fila);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }    
+        
+    }
+ 
     public static Persona buscaCodigoPersona(ConectorDb conector, int CEDULA) {
         Persona x = null;
-        try { //int PE_id, int PE_cedula, String PE_nombre, String PE_segundo_nombre
+        try { 
             PreparedStatement pst = conector.conexion.prepareStatement("SELECT PE_ID,PE_CEDULA,PE_NOMBRE,PE_SEGUNDO_NOMBRE,PE_APELLIDO,PE_SEGUNDO_APELLIDO,PE_WEBSITE,PE_LUGAR_ID,PE_FECHA_NACIMIENTO FROM PERSONA WHERE PE_CEDULA = '" + CEDULA + "'");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
@@ -217,6 +273,26 @@ public class Controladora {
         return x;
     }
     
+    public static Solicitud_pieza_actividad_fabricacion buscaCodigoSPAF(ConectorDb conector, int x,int y) {
+        Solicitud_pieza_actividad_fabricacion spaf = null;
+        try { 
+            PreparedStatement pst = conector.conexion.prepareStatement("select * from solicitud_pieza_actividad_fabricacion where spaf_solicitud_pieza_id = '"+x+"' and spaf_pieza_actividad_fabricacion_id = '"+y+"'");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                int SPAF_SOLICITUD_PIEZA_ID = rs.getInt("SPAF_SOLICITUD_PIEZA_ID");
+                int SPAF_PIEZA_ACTIVIDAD_FABRICACION_ID = rs.getInt("SPAF_PIEZA_ACTIVIDAD_FABRICACION_ID");
+                Date SPAF_FECHA_INICIO = rs.getDate("SPAF_FECHA_INICIO");
+                Date SPAF_FECHA_FIN = rs.getDate("SPAF_FECHA_FIN");
+                boolean SPAF_APROBADO = rs.getBoolean("SPAF_APROBADO");
+                spaf = new Solicitud_pieza_actividad_fabricacion(SPAF_SOLICITUD_PIEZA_ID,SPAF_PIEZA_ACTIVIDAD_FABRICACION_ID,SPAF_FECHA_INICIO,SPAF_FECHA_FIN,SPAF_APROBADO);
+                return spaf;
+            }
+        } catch (SQLException ex) {
+            System.out.print(ex.toString());
+        }
+      return spaf;
+    }
+
     public String getEnvergadura(ConectorDb conector,int id){
         String envergadura = "";
         try {
@@ -306,14 +382,21 @@ public class Controladora {
         return nombre;
     }
     
-        public int getIndex(JTable x){
+   public int getIndex(JTable x){
         DefaultTableModel model = (DefaultTableModel) x.getModel();
         int selectedRowIndex = x.getSelectedRow();
         int indice = Integer.parseInt(model.getValueAt(selectedRowIndex, 0).toString());  
         return indice;
     }
+   
+   public int getIndexY(JTable x){
+        DefaultTableModel model = (DefaultTableModel) x.getModel();
+        int selectedRowIndex = x.getSelectedRow();
+        int indice = Integer.parseInt(model.getValueAt(selectedRowIndex, 1).toString());  
+        return indice;
+    }
     
-        public void buildDescripcionCaracteristicas(ResultSet rs,ConectorDb conector,JTable table, int index, JTextArea describir, JLabel nombreP){
+   public void buildDescripcionCaracteristicas(ResultSet rs,ConectorDb conector,JTable table, int index, JTextArea describir, JLabel nombreP){
         
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("Caracteristica");
@@ -341,7 +424,7 @@ public class Controladora {
             nombreP.setText(nombre); 
         }
         
-        public void limpiarCampo(JTextField x){
+   public void limpiarCampo(JTextField x){
              x.setText("");
         }
         

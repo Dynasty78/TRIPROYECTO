@@ -4,11 +4,12 @@ import Controller.ConectorDb;
 import Controller.Controladora;
 import Dominio.*;
 import java.sql.ResultSet;
+import javax.swing.JFrame;
 
 public class Plantas extends javax.swing.JFrame {
     Controladora control;
     ConectorDb conector;
-    
+    Empleado em;
     public Plantas() {
         initComponents();
         control = new Controladora();
@@ -16,6 +17,15 @@ public class Plantas extends javax.swing.JFrame {
         conector.conectar();
         control.llenarTabla(listaPlantas,control.getResultSet(conector,"SELECT PL_ID,PL_NOMBRE FROM PLANTA "));  
         
+    }
+    
+    public Plantas(JFrame x,Empleado em) {
+        initComponents();
+        control = new Controladora();
+        conector = new ConectorDb();
+        this.em = em;
+        conector.conectar();
+        control.llenarTabla(listaPlantas,control.getResultSet(conector,"SELECT PL_ID,PL_NOMBRE FROM PLANTA "));  
     }
     
     @SuppressWarnings("unchecked")
