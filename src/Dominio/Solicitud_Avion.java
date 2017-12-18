@@ -65,7 +65,7 @@ public class Solicitud_Avion {
 
     public void agregarPieza(ConectorDb conector) {
         try {
-            String stm = "SELECT pz.pi_id, pz.pi_nombre "+
+            String stm = "SELECT pz.pi_id, pz.pi_nombre, ap.ap_cantidad_pieza "+
                             "FROM pieza pz "+
                             "INNER JOIN avion_pieza ap ON pz.pi_id = ap.ap_pieza_id "+
                             "INNER JOIN avion av ON ap.ap_avion_id = av.av_id "+
@@ -76,22 +76,23 @@ public class Solicitud_Avion {
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 // por cada pieza, genero la solicitud de la misma 
-                int pieza_id = rs.getInt("pi_id");
-                SA_id = getLastId(conector);
-                
-                Solicitud_pieza sp = new Solicitud_pieza(SA_id, pieza_id);
-                sp.agregarDb(conector);
+                for (int i = 0; i < rs.getInt("ap_cantidad_pieza"); i++) {
+                    int pieza_id = rs.getInt("pi_id");
+                    SA_id = getLastId(conector);
+                    
+                    Solicitud_pieza sp = new Solicitud_pieza(SA_id, pieza_id);
+                    sp.agregarDb(conector);
 
-                int SP_id = sp.getLastId(conector);
+                    int SP_id = sp.getLastId(conector);
 
-                // genero compras de los materiales
-                Compra_material cm = new Compra_material(SP_id, pieza_id);
-                cm.generarCompra_Material(conector);
+                    // genero compras de los materiales
+                    Compra_material cm = new Compra_material(SP_id, pieza_id);
+                    cm.generarCompra_Material(conector);
 
-                // genero las actividades de cada  pieza
-                Solicitud_pieza_actividad_fabricacion spaf = new Solicitud_pieza_actividad_fabricacion(SP_id, pieza_id);
-                spaf.generarSPAF(conector);
-
+                    // genero las actividades de cada  pieza
+                    Solicitud_pieza_actividad_fabricacion spaf = new Solicitud_pieza_actividad_fabricacion(SP_id, pieza_id);
+                    spaf.generarSPAF(conector);
+                }
             }
         } catch (SQLException ex) {
             System.out.println("aqui");
@@ -118,5 +119,7 @@ public class Solicitud_Avion {
         agregarDb(conector);
         agregarPieza(conector);
     }
+
+
 
 }
