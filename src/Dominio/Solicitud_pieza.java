@@ -139,5 +139,70 @@ public class Solicitud_pieza {
         return i;
     }
 
+    public static int siguienteActividadSinCompletar(ConectorDb conector, int solicitud_pieza_id)
+    {
+        // SELECT spaf_id
+        // FROM solicitud_pieza_actividad_fabricacion
+        // WHERE spaf_solicitud_pieza_id = 1 AND spaf_aprobado IS NULL
+        // LIMIT 1
+        try {
+            String stm = 
+            "SELECT spaf_id "+
+            "FROM solicitud_pieza_actividad_fabricacion "+
+            "WHERE spaf_solicitud_pieza_id =" + compra_material_id + "AND spaf_aprobado IS NULL "+
+            "LIMIT 1 ";
 
+            PreparedStatement pst = conector.conexion.prepareStatement(stm);
+            ResultSet rs = pst.executeQuery();
+
+            int solicitud_pieza_actividad_fabricacion_id = 0;
+            if (rs.next()) {
+                solicitud_pieza_actividad_fabricacion_id = rs.getInt("spaf_id");
+            }
+
+            return solicitud_pieza_actividad_fabricacion_id;
+        } catch (SQLException ex) {
+            System.out.print(ex.toString());
+        }
+        return 0;
+    }
+
+     public static void settearFechaInicialActividad(ConectorDb conector, int solicitud_pieza_actividad_fabricacion_id)
+    {
+        try {
+            String stm = "UPDATE solicitud_pieza_actividad_fabricacion SET spaf_fecha_inicio = ? WHERE spaf_id = ?";
+            PreparedStatement pst = conector.conexion.prepareStatement(stm);
+            pst.setDate(1, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+            pst.setInt(2, solicitud_pieza_actividad_fabricacion_id);
+            pst.executeUpdate();
+            pst.close();
+        } catch (SQLException ex) {
+            System.out.print(ex.toString());
+        }
+    }
+
+    public void setActividadStatus(ConectorDb conector, int solicitud_pieza_id, bool aprobado)
+    {
+        int solicitud_pieza_actividad_fabricacion_id = siguienteActividadSinCompletar(conector, solicitud_pieza_id)
+       
+        try {
+            String stm = "UPDATE solicitud_pieza_actividad_fabricacion SET spaf_aprobado = ?, spaf_fecha_fin = ? WHERE spaf_id = ?";
+            PreparedStatement pst = conector.conexion.prepareStatement(stm);
+            pst.setBool(1, aprobado);
+            pst.setDate(2, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+            pst.setInt(3, solicitud_pieza_actividad_fabricacion_id);
+            pst.executeUpdate();
+            pst.close();
+        } catch (SQLException ex) {
+            System.out.print(ex.toString());
+        }
+        
+        int siguiente = siguienteActividadSinCompletar(conector, solicitud_pieza_id);
+        if (siguiente == 0) {
+            // termino construccion pieza
+        }
+        else {
+            settearFechaInicialActividad(conector, siguiente)
+        }
+    }
 }

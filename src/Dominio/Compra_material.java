@@ -155,5 +155,31 @@ public class Compra_material {
             System.out.print(ex.toString());
         }
     }
+
+    public void setPruebaStatus(ConectorDb conector, int compra_material_id, boolean aprobado)
+    {
+        int prueba_material_compra_id = siguientePruebaSinCompletar(conector, compra_material_id);
+       
+        try {
+            String stm = "UPDATE prueba_material_compra SET pmc_aprobado = ?, pmc_fecha_fin = ? WHERE pmc_id = ?";
+            PreparedStatement pst = conector.conexion.prepareStatement(stm);
+            pst.setBoolean(1, aprobado);
+            pst.setDate(2, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+            pst.setInt(3, prueba_material_compra_id);
+            pst.executeUpdate();
+            pst.close();
+        } catch (SQLException ex) {
+            System.out.print(ex.toString());
+        }
+        
+        int siguiente = siguientePruebaSinCompletar(conector, compra_material_id);
+        if (siguiente == 0) {
+            int solicitud_pieza_actividad_fabricacion_id = Solicitud_pieza.siguienteActividadSinCompletar(conector, CM_solicitud_pieza_id);
+            Solicitud_pieza.settearFechaInicialActividad(conector, solicitud_pieza_actividad_fabricacion_id);
+        }
+        else {
+            settearFechaInicialPrueba(conector, siguiente);
+        }
+    }
 }
 
